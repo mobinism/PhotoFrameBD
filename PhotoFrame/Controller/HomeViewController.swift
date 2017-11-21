@@ -66,18 +66,22 @@ class HomeViewController: UIViewController {
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         return label
     }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = BG_COLOR
         setupUI()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
     }
+    
     func setupUI(){
         setupMenuButton()
         setupLogoImageView()

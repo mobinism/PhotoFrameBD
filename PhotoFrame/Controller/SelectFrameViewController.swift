@@ -16,7 +16,7 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
     var frameArray = [#imageLiteral(resourceName: "Frame-1"), #imageLiteral(resourceName: "Frame-2"), #imageLiteral(resourceName: "Frame-3"), #imageLiteral(resourceName: "Frame-4"), #imageLiteral(resourceName: "Frame-5"), #imageLiteral(resourceName: "Frame-6"), #imageLiteral(resourceName: "Frame-7"), #imageLiteral(resourceName: "Frame-8"), #imageLiteral(resourceName: "Frame-9"), #imageLiteral(resourceName: "Frame-10"), #imageLiteral(resourceName: "Frame-11"), #imageLiteral(resourceName: "Frame-12")]
     lazy var selectedPhoto : UIImageView = {
         var photo = UIImageView()
-        photo.contentMode = .scaleAspectFill
+        photo.contentMode = .scaleAspectFit
         photo.clipsToBounds = true
         photo.translatesAutoresizingMaskIntoConstraints = false
         photo.isUserInteractionEnabled = true
@@ -63,14 +63,14 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
         button.setTitleColor(UIColor.black, for: .normal)
         button.backgroundColor = BG_COLOR
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(handleButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleCropButton), for: .touchUpInside)
         return button
     }()
     lazy var photoSizeButton : UIButton = {
         let button = UIButton(type: .system)
         button.contentHorizontalAlignment = .center
-//      button.titleEdgeInsets = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 5)
-//      button.imageEdgeInsets = UIEdgeInsets(top: 0,left: 5,bottom: 0,right: 0)
+        //button.titleEdgeInsets = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 5)
+        //button.imageEdgeInsets = UIEdgeInsets(top: 0,left: 5,bottom: 0,right: 0)
         button.setTitle("3R ▼", for: .normal)
         //button.setImage(UIImage(named:"dropdown-icon"), for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
@@ -138,9 +138,15 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
         self.navigationItem.hidesBackButton = true
         let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(self.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
+        self.frame.image = self.frameArray[0]
+        UserDefaults.standard.set("\(0)", forKey: FRAME_ID)
+        self.overLayFrame()
     }
     
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer){
+        self.handleContinueButton()
+    }
+    @objc func handleCropButton(){
         self.handleContinueButton()
     }
     @objc func back(sender: UIBarButtonItem) {
@@ -150,7 +156,10 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
         super.viewWillAppear(animated)
         
         if  frame.image == nil{
-            UserDefaults.standard.set("0", forKey: FRAME_ID)
+            UserDefaults.standard.set("-1", forKey: FRAME_ID)
+        }
+        else{
+            print("Frame id is not empty")
         }
         self.customNavigationBar()
     }
@@ -270,6 +279,7 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
         print("Button Pressed")
     }
     @objc func handleContinueButton(){
+        print("Crop Image tapped")
         let editSelectedPhotoVC = EditSelectedPhotoViewController()
         self.imageToEdit = self.selectedPhoto.image!
         editSelectedPhotoVC.rawPhoto = self.imageToEdit

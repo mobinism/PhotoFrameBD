@@ -15,6 +15,7 @@
 		0818AF931F8CC17100A5F0E5 /* MyriadPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0818AF921F8CC0B600A5F0E5 /* MyriadPro-Regular.otf */; };
 		0818AF951F8CD6FC00A5F0E5 /* SelectSizeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818AF941F8CD6FC00A5F0E5 /* SelectSizeViewController.swift */; };
 		0818AF9A1F8CDCA400A5F0E5 /* FrameCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818AF991F8CDCA400A5F0E5 /* FrameCollectionViewCell.swift */; };
+		082752731FC2B0EF005774CC /* CustomImageCropperOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082752721FC2B0EF005774CC /* CustomImageCropperOverlayView.swift */; };
 		082A6BF91FA0903800986C6B /* FullScreenMenuLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082A6BF81FA0903800986C6B /* FullScreenMenuLauncher.swift */; };
 		083AD3AF1FA6F89A00E08CF2 /* SelectFrameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083AD3AE1FA6F89A00E08CF2 /* SelectFrameViewController.swift */; };
 		083AD3B11FA7348E00E08CF2 /* SelectFrameCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083AD3B01FA7348E00E08CF2 /* SelectFrameCollectionViewCell.swift */; };
@@ -26,6 +27,7 @@
 		08A111BE1FB8641400AB8D23 /* ColorFilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A111BD1FB8641400AB8D23 /* ColorFilterCollectionViewCell.swift */; };
 		08AA00A81FA076CD000DC131 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08AA00A71FA076CD000DC131 /* PhotosViewController.swift */; };
 		08AA00AA1FA0791C000DC131 /* PhotosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08AA00A91FA0791C000DC131 /* PhotosCollectionViewCell.swift */; };
+		13BDD34E2A1C552FB55ABE0A /* Pods_PhotoFrame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3D169826654FB3B8087AC8C /* Pods_PhotoFrame.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +41,7 @@
 		0818AF921F8CC0B600A5F0E5 /* MyriadPro-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MyriadPro-Regular.otf"; sourceTree = "<group>"; };
 		0818AF941F8CD6FC00A5F0E5 /* SelectSizeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectSizeViewController.swift; sourceTree = "<group>"; };
 		0818AF991F8CDCA400A5F0E5 /* FrameCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameCollectionViewCell.swift; sourceTree = "<group>"; };
+		082752721FC2B0EF005774CC /* CustomImageCropperOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageCropperOverlayView.swift; sourceTree = "<group>"; };
 		082A6BF81FA0903800986C6B /* FullScreenMenuLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenMenuLauncher.swift; sourceTree = "<group>"; };
 		083AD3AE1FA6F89A00E08CF2 /* SelectFrameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFrameViewController.swift; sourceTree = "<group>"; };
 		083AD3B01FA7348E00E08CF2 /* SelectFrameCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFrameCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -50,6 +53,9 @@
 		08A111BD1FB8641400AB8D23 /* ColorFilterCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorFilterCollectionViewCell.swift; sourceTree = "<group>"; };
 		08AA00A71FA076CD000DC131 /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
 		08AA00A91FA0791C000DC131 /* PhotosCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosCollectionViewCell.swift; sourceTree = "<group>"; };
+		113AE12AAE3563DC348328E6 /* Pods-PhotoFrame.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoFrame.release.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoFrame/Pods-PhotoFrame.release.xcconfig"; sourceTree = "<group>"; };
+		449082D915FEC133200FCED6 /* Pods-PhotoFrame.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoFrame.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoFrame/Pods-PhotoFrame.debug.xcconfig"; sourceTree = "<group>"; };
+		D3D169826654FB3B8087AC8C /* Pods_PhotoFrame.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PhotoFrame.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +64,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				085802B91FA1C13700D81C3F /* Photos.framework in Frameworks */,
+				13BDD34E2A1C552FB55ABE0A /* Pods_PhotoFrame.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,6 +77,7 @@
 				0818AF7A1F8CB47400A5F0E5 /* PhotoFrame */,
 				0818AF791F8CB47400A5F0E5 /* Products */,
 				085802B71FA1C13700D81C3F /* Frameworks */,
+				CB2FE62D882CB0E121BB420B /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -129,6 +137,7 @@
 				083AD3AE1FA6F89A00E08CF2 /* SelectFrameViewController.swift */,
 				084976AF1FAB2F620053F08A /* EditSelectedPhotoViewController.swift */,
 				0856AD5E1FBB061D0006AA0F /* ShippingAndPaymentViewController.swift */,
+				082752721FC2B0EF005774CC /* CustomImageCropperOverlayView.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -159,8 +168,18 @@
 			isa = PBXGroup;
 			children = (
 				085802B81FA1C13700D81C3F /* Photos.framework */,
+				D3D169826654FB3B8087AC8C /* Pods_PhotoFrame.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CB2FE62D882CB0E121BB420B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				449082D915FEC133200FCED6 /* Pods-PhotoFrame.debug.xcconfig */,
+				113AE12AAE3563DC348328E6 /* Pods-PhotoFrame.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -170,9 +189,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0818AF8A1F8CB47400A5F0E5 /* Build configuration list for PBXNativeTarget "PhotoFrame" */;
 			buildPhases = (
+				00AE728D04BD8BCA2226857E /* [CP] Check Pods Manifest.lock */,
 				0818AF741F8CB47400A5F0E5 /* Sources */,
 				0818AF751F8CB47400A5F0E5 /* Frameworks */,
 				0818AF761F8CB47400A5F0E5 /* Resources */,
+				23F22CF1BC7F42B854D06002 /* [CP] Embed Pods Frameworks */,
+				16BCC221F52A98EF9A168EE9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -230,6 +252,62 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		00AE728D04BD8BCA2226857E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PhotoFrame-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		16BCC221F52A98EF9A168EE9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PhotoFrame/Pods-PhotoFrame-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		23F22CF1BC7F42B854D06002 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PhotoFrame/Pods-PhotoFrame-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AKImageCropperView/AKImageCropperView.framework",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AKImageCropperView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PhotoFrame/Pods-PhotoFrame-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0818AF741F8CB47400A5F0E5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -239,6 +317,7 @@
 				0818AF7C1F8CB47400A5F0E5 /* AppDelegate.swift in Sources */,
 				083F707E1F8DEE7400B022C4 /* ReUsableNavigationBar.swift in Sources */,
 				0818AF8F1F8CBE7600A5F0E5 /* Config.swift in Sources */,
+				082752731FC2B0EF005774CC /* CustomImageCropperOverlayView.swift in Sources */,
 				083AD3B11FA7348E00E08CF2 /* SelectFrameCollectionViewCell.swift in Sources */,
 				0856AD5F1FBB061D0006AA0F /* ShippingAndPaymentViewController.swift in Sources */,
 				08AA00A81FA076CD000DC131 /* PhotosViewController.swift in Sources */,
@@ -376,6 +455,7 @@
 		};
 		0818AF8B1F8CB47400A5F0E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 449082D915FEC133200FCED6 /* Pods-PhotoFrame.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -393,6 +473,7 @@
 		};
 		0818AF8C1F8CB47400A5F0E5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 113AE12AAE3563DC348328E6 /* Pods-PhotoFrame.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;

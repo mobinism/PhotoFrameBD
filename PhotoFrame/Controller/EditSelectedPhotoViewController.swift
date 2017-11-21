@@ -6,16 +6,19 @@
 //  Copyright © 2017 Creativeitem. All rights reserved.
 //
 
+
 import Photos
+import AKImageCropperView
 import UIKit
 class EditSelectedPhotoViewController: UIViewController{
     let selectFrameVC = SelectFrameViewController()
     var rawPhoto : UIImage!
-    
+    var croppedImage : UIImage!
     // contrast and brightness handler
     var context = CIContext()
     var imageToProcess: UIImage!
     var outputImage : UIImage!
+    
     //added filters
     let colorFilterArray = [
         "CIVignette",
@@ -36,6 +39,12 @@ class EditSelectedPhotoViewController: UIViewController{
         ]
     
     let cellID = "ColorFilterCollectionViewCell"
+    
+    var cropViewProgrammatically: AKImageCropperView!
+    
+    private var cropView: AKImageCropperView {
+        return cropViewProgrammatically
+    }
     
     lazy var brightnessLabel : UILabel = {
         let label = UILabel()
@@ -119,15 +128,15 @@ class EditSelectedPhotoViewController: UIViewController{
     
     lazy var selectedImage : UIImageView = {
         var uiImageView = UIImageView()
-        uiImageView.image = self.imageToProcess
         uiImageView.contentMode = .scaleAspectFill
         uiImageView.clipsToBounds = true
         uiImageView.translatesAutoresizingMaskIntoConstraints = false
         uiImageView.isUserInteractionEnabled = true
-        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(handleFramePinch(_:)))
+        uiImageView.alpha = 0.4
+        /*let pinch = UIPinchGestureRecognizer(target: self, action: #selector(handleFramePinch(_:)))
         uiImageView.addGestureRecognizer(pinch)
         let pan = UIPanGestureRecognizer(target: self, action: #selector(handleFramePan(_:)))
-         uiImageView.addGestureRecognizer(pan)
+         uiImageView.addGestureRecognizer(pan)*/
         return uiImageView
     }()
     
@@ -139,6 +148,21 @@ class EditSelectedPhotoViewController: UIViewController{
         button.backgroundColor = UIColor(red:0.22, green:0.69, blue:0.91, alpha:1.0)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(handleDone), for: .touchUpInside)
+        button.layer.shadowColor = UIColor.init(white: 0.5, alpha: 1).cgColor
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0.3
+        button.titleLabel!.font =  UIFont(name: TEXT_FONT, size: 18)
+        button.layer.shadowOffset = CGSize(width: 0, height: -2)
+        return button
+    }()
+    lazy var cropButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.contentHorizontalAlignment = .center
+        button.setTitle("Crop", for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.backgroundColor = UIColor(red:0.22, green:0.69, blue:0.91, alpha:1.0)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(handleCrop), for: .touchUpInside)
         button.layer.shadowColor = UIColor.init(white: 0.5, alpha: 1).cgColor
         button.layer.shadowRadius = 3
         button.layer.shadowOpacity = 0.3
@@ -163,19 +187,62 @@ class EditSelectedPhotoViewController: UIViewController{
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //assigning raw image to imageToProcess
-        self.imageToProcess = self.rawPhoto
         
+        self.selectedImage.image = self.rawPhoto
         view.backgroundColor = BG_COLOR
+        
         let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(self.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
         self.colorFilterCollectionView.register(ColorFilterCollectionViewCell.self, forCellWithReuseIdentifier: cellID)
         setupUI()
+        setupCropView()
+        self.makeStuffsInvisible()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.customNavigationBar()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+            self.cropView.showOverlayView(animationDuration: 0.2)
+        })
+    }
+    
+    func setupCropView(){
+        // Programmatically initialization
+        
+        // iPhone 4.7"
+        
+         /*cropViewProgrammatically = AKImageCropperView(frame: CGRect(x: 0, y: 20.0, width: 375.0, height: 607.0))
+         view.addSubview(cropViewProgrammatically)*/
+        
+         // with constraints
+         cropViewProgrammatically = AKImageCropperView()
+         cropViewProgrammatically.translatesAutoresizingMaskIntoConstraints = false
+        cropViewProgrammatically.contentMode = .scaleAspectFit
+         view.addSubview(cropViewProgrammatically)
+        
+        // layout constarints
+         cropViewProgrammatically.topAnchor.constraint(equalTo: imageArea.topAnchor).isActive = true
+         cropViewProgrammatically.leftAnchor.constraint(equalTo: imageArea.leftAnchor).isActive = true
+         cropViewProgrammatically.rightAnchor.constraint(equalTo: imageArea.rightAnchor).isActive = true
+         cropViewProgrammatically.bottomAnchor.constraint(equalTo: imageArea.bottomAnchor).isActive = true
+        
+        
+        // Inset for overlay action view
+        
+         cropView.overlayView?.configuraiton.cropRectInsets.bottom = 50
+        
+        // Custom overlay view configuration
+        
+         var customConfiguraiton = AKImageCropperCropViewConfiguration()
+         customConfiguraiton.cropRectInsets.bottom = 50
+         cropView.overlayView = CustomImageCropperOverlayView(configuraiton: customConfiguraiton)
+        
+        cropView.delegate = self
+        cropView.image = self.rawPhoto
     }
     
     func simpleBlurFilterExample(myImage: UIImage) -> UIImage {
@@ -207,11 +274,17 @@ class EditSelectedPhotoViewController: UIViewController{
         return UIImage.init(cgImage: filteredImageRef!)
     }
     
-    func addFilter(colorFilter: String)->UIImage{
-        // Create filters for each button
+    func addFilter(colorFilter: String)->UIImage {
+        
+        //making the slider button as default
+        self.brightnessSlider.value = 0
+        self.contrastSlider.value = 1
+        
         self.imageToProcess = nil
-        self.imageToProcess = self.rawPhoto
-        let myImage : UIImage! = self.imageToProcess
+        var filterOverCroppedImage : UIImage!
+        var myImage : UIImage! = nil
+        myImage = self.croppedImage!
+        
         let ciContext = CIContext(options: nil)
         let coreImage = CIImage(image: myImage)
         let filter = CIFilter(name: colorFilter)
@@ -220,14 +293,24 @@ class EditSelectedPhotoViewController: UIViewController{
         let filteredImageData = filter!.value(forKey: kCIOutputImageKey) as! CIImage
         let filteredImageRef = ciContext.createCGImage(filteredImageData, from: filteredImageData.extent)
         //let imageForButton = CIImage(cgImage: filteredImageRef!)
-        self.imageToProcess = UIImage.init(cgImage: filteredImageRef!)
-        return self.imageToProcess
+        filterOverCroppedImage = nil
+        filterOverCroppedImage = UIImage.init(cgImage: filteredImageRef!)
+        self.imageToProcess = filterOverCroppedImage
+        return filterOverCroppedImage
     }
     
     // method called when the slider value is changed
     @objc func handleSlider(_ sender: UISlider) {
-
-        let inputImage = CIImage(image: self.imageToProcess)
+        
+        var inputImage = CIImage()
+        if self.imageToProcess == nil{
+            print("No filter applied")
+            inputImage = CIImage(image: self.croppedImage!)!
+        }
+        else{
+            print("Filter applied")
+            inputImage = CIImage(image: self.imageToProcess!)!
+        }
         var outputImage = CIImage()
         let filter = CIFilter(name: "CIColorControls")
         filter?.setValue(inputImage, forKey: "inputImage")
@@ -239,7 +322,9 @@ class EditSelectedPhotoViewController: UIViewController{
         outputImage = (filter?.outputImage)!
         let imageRef = context.createCGImage(outputImage, from: outputImage.extent)
         let finalImage = UIImage(cgImage: imageRef!)
-        self.selectedImage.image = finalImage
+        UIView.animate(withDuration: 0.3) {
+            self.selectedImage.image = finalImage
+        }
     }
     
     @objc func back(sender: UIBarButtonItem) {
@@ -247,7 +332,6 @@ class EditSelectedPhotoViewController: UIViewController{
     }
     
     func customNavigationBar(){
-        
         navigationController?.navigationBar.shadowImage = UIImage() // this line makes the navigation bar borderless.
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.isTranslucent = false
@@ -270,6 +354,7 @@ class EditSelectedPhotoViewController: UIViewController{
         setupContrastLabel()
         setupCancelButton()
         setupDoneButton()
+        setupCropButton()
         setupColorFilterCollectionView()
     }
     
@@ -281,8 +366,6 @@ class EditSelectedPhotoViewController: UIViewController{
         imageArea.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5).isActive = true
     }
     func setupSelectedImage(){
-        self.selectedImage.image = nil
-        self.selectedImage.image = self.imageToProcess
         imageArea.addSubview(selectedImage)
         selectedImage.topAnchor.constraint(equalTo: imageArea.topAnchor).isActive = true
         selectedImage.leftAnchor.constraint(equalTo: imageArea.leftAnchor).isActive = true
@@ -300,8 +383,8 @@ class EditSelectedPhotoViewController: UIViewController{
     func setupContrastSlider(){
         view.addSubview(contrastSlider)
         contrastSlider.topAnchor.constraint(equalTo: imageArea.bottomAnchor, constant: 30).isActive = true
-        contrastSlider.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.4).isActive = true
         contrastSlider.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -25).isActive = true
+        contrastSlider.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.4).isActive = true
         contrastSlider.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.07).isActive = true
     }
     
@@ -342,18 +425,68 @@ class EditSelectedPhotoViewController: UIViewController{
         doneButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.1).isActive = true
         doneButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
     }
+    func setupCropButton(){
+        view.addSubview(cropButton)
+        cropButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        cropButton.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        cropButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.1).isActive = true
+        cropButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
+    }
     
     @objc func handleCancel(){
-        self.navigationController?.popViewController(animated: true)
+        self.showActionSheet()
+    }
+    
+    func showActionSheet(){
+        let alertView = UIAlertController(title: "Are You Sure?", message: "Your customizations will no longer exist.", preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        alertView.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { (action: UIAlertAction!) in
+            self.navigationController?.popViewController(animated: true)
+        }))
+        
+        alertView.addAction(UIAlertAction(title: "No", style: .default, handler: { (action: UIAlertAction!) in
+            
+        }))
+        present(alertView, animated: true, completion: nil)
     }
     
     @objc func handleDone(){
         
         let shippingVC = ShippingAndPaymentViewController()
-        shippingVC.selectedPhoto.image = self.imageToProcess
+        shippingVC.selectedPhoto.image = self.selectedImage.image
         self.navigationController?.pushViewController(shippingVC, animated: true)
     }
     
+    @objc func handleCrop(){
+        guard let image = cropViewProgrammatically.croppedImage else {
+            return
+        }
+        self.croppedImage        = image
+        self.selectedImage.image = croppedImage
+        self.makeStuffsVisible(image: image)
+    }
+    func makeStuffsVisible(image: UIImage!){
+        UIView.animate(withDuration: 0.3) {
+            self.cropViewProgrammatically.alpha  = 0
+            self.cropView.alpha                  = 0
+            self.doneButton.alpha                = 1
+            self.cropButton.alpha                = 0
+            self.selectedImage.alpha             = 1
+            self.selectedImage.contentMode       = .scaleAspectFit
+            self.brightnessLabel.alpha           = 1
+            self.brightnessSlider.alpha          = 1
+            self.contrastLabel.alpha             = 1
+            self.contrastSlider.alpha            = 1
+            self.colorFilterCollectionView.alpha = 1
+        }
+    }
+    func makeStuffsInvisible(){
+        self.brightnessLabel.alpha           = 0
+        self.brightnessSlider.alpha          = 0
+        self.contrastLabel.alpha             = 0
+        self.contrastSlider.alpha            = 0
+        self.colorFilterCollectionView.alpha = 0
+    }
     @objc func handleFramePan(_ recognizer: UIPanGestureRecognizer) {
         if let parentView = recognizer.view?.superview {
             let itemToPan = parentView.subviews[0]
@@ -371,7 +504,16 @@ class EditSelectedPhotoViewController: UIViewController{
         }
     }
 }
-
+extension EditSelectedPhotoViewController: AKImageCropperViewDelegate {
+    
+    func imageCropperViewDidChangeCropRect(view: AKImageCropperView, cropRect rect: CGRect) {
+        print("New crop rectangle: \(rect)")
+    }
+    
+}
+extension EditSelectedPhotoViewController: UIActionSheetDelegate{
+    
+}
 extension EditSelectedPhotoViewController : UICollectionViewDelegate, UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.colorFilterArray.count
@@ -379,7 +521,7 @@ extension EditSelectedPhotoViewController : UICollectionViewDelegate, UICollecti
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as? ColorFilterCollectionViewCell {
-            self.selectedImage.image = self.rawPhoto
+            self.cropViewProgrammatically.image = self.rawPhoto
             cell.filter = self.addFilterForButtonPreview(colorFilter: self.colorFilterArray[indexPath.row])
             cell.filterPreview.layer.cornerRadius = cell.frame.height / 2
             return cell
@@ -391,7 +533,9 @@ extension EditSelectedPhotoViewController : UICollectionViewDelegate, UICollecti
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("did select")
-        self.selectedImage.image = self.addFilter(colorFilter: self.colorFilterArray[indexPath.row])
+        UIView.animate(withDuration: 0.3, animations: {
+            self.selectedImage.image = self.addFilter(colorFilter: self.colorFilterArray[indexPath.row])
+        })
     }
 }
 

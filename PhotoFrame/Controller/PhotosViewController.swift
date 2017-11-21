@@ -80,7 +80,7 @@ class PhotosViewController: UIViewController, UICollectionViewDelegate, UICollec
         let width = view.frame.width
         let scrollviewPointer = targetContentOffset.pointee.x
         let albumIndex = scrollviewPointer / width
-        let indexPath = NSIndexPath(item: Int(albumIndex), section: 0)
+        let _ = NSIndexPath(item: Int(albumIndex), section: 0)
         //self.moveAlbumsHorizontalScrollView(indexPath: indexPath)
     }
     override func viewWillAppear(_ animated: Bool) {
