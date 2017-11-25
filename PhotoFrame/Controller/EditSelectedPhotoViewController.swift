@@ -304,11 +304,11 @@ class EditSelectedPhotoViewController: UIViewController{
         
         var inputImage = CIImage()
         if self.imageToProcess == nil{
-            print("No filter applied")
+            //print("No filter applied")
             inputImage = CIImage(image: self.croppedImage!)!
         }
         else{
-            print("Filter applied")
+            //print("Filter applied")
             inputImage = CIImage(image: self.imageToProcess!)!
         }
         var outputImage = CIImage()
@@ -521,9 +521,12 @@ extension EditSelectedPhotoViewController : UICollectionViewDelegate, UICollecti
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as? ColorFilterCollectionViewCell {
-            self.cropViewProgrammatically.image = self.rawPhoto
-            cell.filter = self.addFilterForButtonPreview(colorFilter: self.colorFilterArray[indexPath.row])
-            cell.filterPreview.layer.cornerRadius = cell.frame.height / 2
+            
+            DispatchQueue.main.async {
+                self.cropViewProgrammatically.image = self.rawPhoto
+                cell.filter = self.addFilterForButtonPreview(colorFilter: self.colorFilterArray[indexPath.row])
+                cell.filterPreview.layer.cornerRadius = cell.frame.height / 2
+            }
             return cell
         }
         else{
@@ -532,7 +535,7 @@ extension EditSelectedPhotoViewController : UICollectionViewDelegate, UICollecti
         }
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("did select")
+        //print("did select")
         UIView.animate(withDuration: 0.3, animations: {
             self.selectedImage.image = self.addFilter(colorFilter: self.colorFilterArray[indexPath.row])
         })

@@ -194,10 +194,27 @@ class PhotosViewController: UIViewController, UICollectionViewDelegate, UICollec
         
     }
     
-    func moveToSelectFrameViewController(image : UIImage){
-        let selectedFrameVC = SelectFrameViewController()
-        selectedFrameVC.selectedPhoto.image = image
-        self.navigationController?.pushViewController(selectedFrameVC, animated: true)
+    func moveToSelectFrameViewController(tappedImage : UIImage, imageId : Int){
+        
+        
+        let imgManager = PHImageManager.default()
+        let requestOptions = PHImageRequestOptions()
+        requestOptions.isSynchronous = true
+        requestOptions.deliveryMode = .highQualityFormat
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        if let fetchResult : PHFetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions){
+            // my code starts
+            let asset = fetchResult.firstObject
+            let targetHeight = asset?.pixelHeight
+            let targetWidth = asset?.pixelWidth
+            imgManager.requestImage(for: fetchResult.object(at: imageId), targetSize: CGSize(width: targetWidth!, height: targetHeight!), contentMode: .aspectFill, options: requestOptions, resultHandler: {
+                (image, error) in
+                let selectedFrameVC = SelectFrameViewController()
+                selectedFrameVC.selectedPhoto.image = image
+                self.navigationController?.pushViewController(selectedFrameVC, animated: true)
+            })
+        }
     }
 }
 

@@ -49,11 +49,12 @@ class PhotosCollectionViewCell: UICollectionViewCell, UICollectionViewDataSource
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         if let fetchResult : PHFetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions){
+           
             if fetchResult.count > 0 {
-                if !imagesArray.isEmpty{
-                    imagesArray.removeAll()
+                if !self.imagesArray.isEmpty{
+                    self.imagesArray.removeAll()
                 }
-                    for i in 0..<fetchResult.count{
+                for i in 0..<fetchResult.count{
                     imgManager.requestImage(for: fetchResult.object(at: i), targetSize: CGSize(width: 100, height: 100), contentMode: .aspectFill, options: requestOptions, resultHandler: {
                         (image, error) in
                         self.imagesArray.append(image!)
@@ -101,7 +102,7 @@ class PhotosCollectionViewCell: UICollectionViewCell, UICollectionViewDataSource
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.photosVC.moveToSelectFrameViewController(image: imagesArray[indexPath.row] as UIImage)
+        self.photosVC.moveToSelectFrameViewController(tappedImage: imagesArray[indexPath.row] as UIImage, imageId: indexPath.row)
     }
     
     required init?(coder aDecoder: NSCoder) {
