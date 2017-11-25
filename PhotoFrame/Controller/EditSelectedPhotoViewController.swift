@@ -328,7 +328,7 @@ class EditSelectedPhotoViewController: UIViewController{
     }
     
     @objc func back(sender: UIBarButtonItem) {
-        _ = navigationController?.popViewController(animated: true)
+        self.showActionSheet()
     }
     
     func customNavigationBar(){

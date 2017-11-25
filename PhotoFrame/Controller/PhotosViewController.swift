@@ -195,8 +195,6 @@ class PhotosViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     func moveToSelectFrameViewController(tappedImage : UIImage, imageId : Int){
-        
-        
         let imgManager = PHImageManager.default()
         let requestOptions = PHImageRequestOptions()
         requestOptions.isSynchronous = true
@@ -204,7 +202,6 @@ class PhotosViewController: UIViewController, UICollectionViewDelegate, UICollec
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         if let fetchResult : PHFetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions){
-            // my code starts
             let asset = fetchResult.firstObject
             let targetHeight = asset?.pixelHeight
             let targetWidth = asset?.pixelWidth

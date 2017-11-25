@@ -150,7 +150,7 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
         self.handleContinueButton()
     }
     @objc func back(sender: UIBarButtonItem) {
-        _ = navigationController?.popViewController(animated: true)
+        self.showActionSheet()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -198,7 +198,18 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
         //        let barAppearace = UIBarButtonItem.appearance()
         //        barAppearace.setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -60), for:UIBarMetrics.default)
     }
-    
+    func showActionSheet(){
+        let alertView = UIAlertController(title: "Are You Sure?", message: "Your customizations will no longer exist.", preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        alertView.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { (action: UIAlertAction!) in
+            self.navigationController?.popViewController(animated: true)
+        }))
+        
+        alertView.addAction(UIAlertAction(title: "No", style: .default, handler: { (action: UIAlertAction!) in
+            
+        }))
+        present(alertView, animated: true, completion: nil)
+    }
     func setupUI(){
         setupSelectedImageView()
         setupFrameTitleLabel()
