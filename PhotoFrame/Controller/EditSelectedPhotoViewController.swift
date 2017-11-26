@@ -23,6 +23,7 @@ class EditSelectedPhotoViewController: UIViewController{
     let colorFilterArray = [
         "CIVignette",
         "CISepiaTone",
+        "CIColorMonochrome",
         "CIDotScreen",
         "CIColorInvert",
         "CIColorPosterize",
@@ -292,7 +293,6 @@ class EditSelectedPhotoViewController: UIViewController{
         filter!.setValue(coreImage, forKey: kCIInputImageKey)
         let filteredImageData = filter!.value(forKey: kCIOutputImageKey) as! CIImage
         let filteredImageRef = ciContext.createCGImage(filteredImageData, from: filteredImageData.extent)
-        //let imageForButton = CIImage(cgImage: filteredImageRef!)
         filterOverCroppedImage = nil
         filterOverCroppedImage = UIImage.init(cgImage: filteredImageRef!)
         self.imageToProcess = filterOverCroppedImage

@@ -17,6 +17,8 @@
 		0818AF9A1F8CDCA400A5F0E5 /* FrameCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0818AF991F8CDCA400A5F0E5 /* FrameCollectionViewCell.swift */; };
 		082752731FC2B0EF005774CC /* CustomImageCropperOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082752721FC2B0EF005774CC /* CustomImageCropperOverlayView.swift */; };
 		082A6BF91FA0903800986C6B /* FullScreenMenuLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082A6BF81FA0903800986C6B /* FullScreenMenuLauncher.swift */; };
+		0835BF5A1FCAB6790085A60F /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0835BF591FCAB6790085A60F /* SwiftyJSON.swift */; };
+		0835BF5E1FCAC60F0085A60F /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0835BF5D1FCAC60F0085A60F /* DropDownCell.swift */; };
 		083AD3AF1FA6F89A00E08CF2 /* SelectFrameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083AD3AE1FA6F89A00E08CF2 /* SelectFrameViewController.swift */; };
 		083AD3B11FA7348E00E08CF2 /* SelectFrameCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083AD3B01FA7348E00E08CF2 /* SelectFrameCollectionViewCell.swift */; };
 		083F707E1F8DEE7400B022C4 /* ReUsableNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083F707D1F8DEE7400B022C4 /* ReUsableNavigationBar.swift */; };
@@ -28,6 +30,7 @@
 		08AA00A81FA076CD000DC131 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08AA00A71FA076CD000DC131 /* PhotosViewController.swift */; };
 		08AA00AA1FA0791C000DC131 /* PhotosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08AA00A91FA0791C000DC131 /* PhotosCollectionViewCell.swift */; };
 		13BDD34E2A1C552FB55ABE0A /* Pods_PhotoFrame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3D169826654FB3B8087AC8C /* Pods_PhotoFrame.framework */; };
+		1DB95D741FCB2B0F0007D59B /* DropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB95D731FCB2B0F0007D59B /* DropDown.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +46,8 @@
 		0818AF991F8CDCA400A5F0E5 /* FrameCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameCollectionViewCell.swift; sourceTree = "<group>"; };
 		082752721FC2B0EF005774CC /* CustomImageCropperOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageCropperOverlayView.swift; sourceTree = "<group>"; };
 		082A6BF81FA0903800986C6B /* FullScreenMenuLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenMenuLauncher.swift; sourceTree = "<group>"; };
+		0835BF591FCAB6790085A60F /* SwiftyJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		0835BF5D1FCAC60F0085A60F /* DropDownCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownCell.swift; sourceTree = "<group>"; };
 		083AD3AE1FA6F89A00E08CF2 /* SelectFrameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFrameViewController.swift; sourceTree = "<group>"; };
 		083AD3B01FA7348E00E08CF2 /* SelectFrameCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFrameCollectionViewCell.swift; sourceTree = "<group>"; };
 		083F707D1F8DEE7400B022C4 /* ReUsableNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReUsableNavigationBar.swift; sourceTree = "<group>"; };
@@ -54,6 +59,7 @@
 		08AA00A71FA076CD000DC131 /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
 		08AA00A91FA0791C000DC131 /* PhotosCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosCollectionViewCell.swift; sourceTree = "<group>"; };
 		113AE12AAE3563DC348328E6 /* Pods-PhotoFrame.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoFrame.release.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoFrame/Pods-PhotoFrame.release.xcconfig"; sourceTree = "<group>"; };
+		1DB95D731FCB2B0F0007D59B /* DropDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDown.swift; sourceTree = "<group>"; };
 		449082D915FEC133200FCED6 /* Pods-PhotoFrame.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoFrame.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoFrame/Pods-PhotoFrame.debug.xcconfig"; sourceTree = "<group>"; };
 		D3D169826654FB3B8087AC8C /* Pods_PhotoFrame.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PhotoFrame.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -108,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				0818AF8E1F8CBE7600A5F0E5 /* Config.swift */,
+				0835BF591FCAB6790085A60F /* SwiftyJSON.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -148,6 +155,7 @@
 				0818AF981F8CDC8400A5F0E5 /* Cell */,
 				083F707D1F8DEE7400B022C4 /* ReUsableNavigationBar.swift */,
 				082A6BF81FA0903800986C6B /* FullScreenMenuLauncher.swift */,
+				1DB95D731FCB2B0F0007D59B /* DropDown.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -160,6 +168,7 @@
 				085802BF1FA1EBE300D81C3F /* AlbumTitleCollectionViewCell.swift */,
 				083AD3B01FA7348E00E08CF2 /* SelectFrameCollectionViewCell.swift */,
 				08A111BD1FB8641400AB8D23 /* ColorFilterCollectionViewCell.swift */,
+				0835BF5D1FCAC60F0085A60F /* DropDownCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -321,12 +330,15 @@
 				083AD3B11FA7348E00E08CF2 /* SelectFrameCollectionViewCell.swift in Sources */,
 				0856AD5F1FBB061D0006AA0F /* ShippingAndPaymentViewController.swift in Sources */,
 				08AA00A81FA076CD000DC131 /* PhotosViewController.swift in Sources */,
+				0835BF5E1FCAC60F0085A60F /* DropDownCell.swift in Sources */,
 				08AA00AA1FA0791C000DC131 /* PhotosCollectionViewCell.swift in Sources */,
 				082A6BF91FA0903800986C6B /* FullScreenMenuLauncher.swift in Sources */,
 				084976B01FAB2F620053F08A /* EditSelectedPhotoViewController.swift in Sources */,
 				083AD3AF1FA6F89A00E08CF2 /* SelectFrameViewController.swift in Sources */,
 				08A111BE1FB8641400AB8D23 /* ColorFilterCollectionViewCell.swift in Sources */,
+				1DB95D741FCB2B0F0007D59B /* DropDown.swift in Sources */,
 				0818AF9A1F8CDCA400A5F0E5 /* FrameCollectionViewCell.swift in Sources */,
+				0835BF5A1FCAB6790085A60F /* SwiftyJSON.swift in Sources */,
 				0818AF951F8CD6FC00A5F0E5 /* SelectSizeViewController.swift in Sources */,
 				085802C01FA1EBE300D81C3F /* AlbumTitleCollectionViewCell.swift in Sources */,
 			);
