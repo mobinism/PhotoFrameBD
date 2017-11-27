@@ -10,7 +10,6 @@ import UIKit
 import Photos
 class PhotosViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource{
     var chekerForAllPhotosAlbum : Int = 0
-    
     let cellId = "PhotosCollectionView"
     let albumCellId = "AlbumTitleCellId"
     

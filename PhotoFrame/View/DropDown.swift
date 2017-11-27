@@ -10,8 +10,9 @@ import UIKit
 class DropDown: NSObject {
     
     var selectorData = [NSObject]()
+    
     var navigationBarHeight : CGFloat!
-    var statusBarHeight : CGFloat!
+    var statusBarHeight : CGFloat! = UIApplication.shared.statusBarFrame.height
     var coordinateX : CGFloat! = 0
     var coordinateY : CGFloat! = 0
     
@@ -45,13 +46,15 @@ class DropDown: NSObject {
     }()
     
     let cellId = "DropDownCell"
+    var selectFramVC = SelectFrameViewController()
     
     override init() {
         super.init()
         tableView.register(DropDownCell.self, forCellReuseIdentifier: cellId)
     }
     
-    func show() {
+    func show(withData tableData: [NSObject]) {
+        selectorData = tableData
         setupSubViews()
         tableView.reloadData()
     }
@@ -75,14 +78,13 @@ class DropDown: NSObject {
     
     func setupContainerView(window: UIWindow) {
         window.addSubview(containerView)
-        statusBarHeight = UIApplication.shared.statusBarFrame.height
         let height : CGFloat!
-        let width  = window.frame.width * 0.25
+        let width  = window.frame.width * 0.3
         let x = window.frame.width - width
         let y : CGFloat!
         if(self.coordinateX == 0 && self.coordinateY == 0){
              y = self.navigationBarHeight + statusBarHeight
-             height = window.frame.height * 0.4
+             height = window.frame.height * 0.3
         }
         else{
              y = self.coordinateY + self.navigationBarHeight + statusBarHeight + 35
@@ -107,7 +109,7 @@ class DropDown: NSObject {
     
     @objc func hide() {
         if let window = UIApplication.shared.keyWindow {
-            let width  = window.frame.width * 0.25
+            let width  = window.frame.width * 0.3
             let x = window.frame.width - width
             var y : CGFloat!
             UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
@@ -135,12 +137,17 @@ extension DropDown: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return selectorData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? DropDownCell {
-            cell.titleText = "Mobin"
+            if let data = selectorData as? [FrameSizeModel] {
+                cell.titleText = "\(data[indexPath.row].title)"
+            }
+            if let data = selectorData as? [ImageSizeModel] {
+                cell.titleText = "\(data[indexPath.row].imageSizeTitle)"
+            }
             return cell
         } else {
             let cell = tableView.cellForRow(at: indexPath)!
@@ -150,6 +157,15 @@ extension DropDown: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         hide()
+        if let data = selectorData as? [FrameSizeModel] {
+            self.selectFramVC.frameSizeID = "\(data[indexPath.row].id)"
+            self.selectFramVC.barButtonTitle = "\(data[indexPath.row].title) ▼"
+            self.selectFramVC.customNavigationBar()
+            self.selectFramVC.getDefaultImageSize()
+        }
+        if let data = selectorData as? [ImageSizeModel] {
+            self.selectFramVC.changePhotoSizeButtonTitle(title: "\(data[indexPath.row].imageSizeTitle) ▼")
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

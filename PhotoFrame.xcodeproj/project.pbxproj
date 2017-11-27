@@ -29,6 +29,7 @@
 		08A111BE1FB8641400AB8D23 /* ColorFilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A111BD1FB8641400AB8D23 /* ColorFilterCollectionViewCell.swift */; };
 		08AA00A81FA076CD000DC131 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08AA00A71FA076CD000DC131 /* PhotosViewController.swift */; };
 		08AA00AA1FA0791C000DC131 /* PhotosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08AA00A91FA0791C000DC131 /* PhotosCollectionViewCell.swift */; };
+		08C1DCCB1FCBE74D00A051C0 /* DropDownReusableModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C1DCCA1FCBE74D00A051C0 /* DropDownReusableModel.swift */; };
 		13BDD34E2A1C552FB55ABE0A /* Pods_PhotoFrame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3D169826654FB3B8087AC8C /* Pods_PhotoFrame.framework */; };
 		1DB95D741FCB2B0F0007D59B /* DropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB95D731FCB2B0F0007D59B /* DropDown.swift */; };
 /* End PBXBuildFile section */
@@ -58,6 +59,7 @@
 		08A111BD1FB8641400AB8D23 /* ColorFilterCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorFilterCollectionViewCell.swift; sourceTree = "<group>"; };
 		08AA00A71FA076CD000DC131 /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
 		08AA00A91FA0791C000DC131 /* PhotosCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosCollectionViewCell.swift; sourceTree = "<group>"; };
+		08C1DCCA1FCBE74D00A051C0 /* DropDownReusableModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownReusableModel.swift; sourceTree = "<group>"; };
 		113AE12AAE3563DC348328E6 /* Pods-PhotoFrame.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoFrame.release.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoFrame/Pods-PhotoFrame.release.xcconfig"; sourceTree = "<group>"; };
 		1DB95D731FCB2B0F0007D59B /* DropDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDown.swift; sourceTree = "<group>"; };
 		449082D915FEC133200FCED6 /* Pods-PhotoFrame.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoFrame.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoFrame/Pods-PhotoFrame.debug.xcconfig"; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 		0818AF7A1F8CB47400A5F0E5 /* PhotoFrame */ = {
 			isa = PBXGroup;
 			children = (
+				08C1DCC91FCBE6BC00A051C0 /* Model */,
 				0818AF971F8CDC7B00A5F0E5 /* View */,
 				0818AF961F8CD70D00A5F0E5 /* Controller */,
 				0818AF901F8CC08800A5F0E5 /* Resources */,
@@ -180,6 +183,14 @@
 				D3D169826654FB3B8087AC8C /* Pods_PhotoFrame.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		08C1DCC91FCBE6BC00A051C0 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				08C1DCCA1FCBE74D00A051C0 /* DropDownReusableModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		CB2FE62D882CB0E121BB420B /* Pods */ = {
@@ -341,6 +352,7 @@
 				0835BF5A1FCAB6790085A60F /* SwiftyJSON.swift in Sources */,
 				0818AF951F8CD6FC00A5F0E5 /* SelectSizeViewController.swift in Sources */,
 				085802C01FA1EBE300D81C3F /* AlbumTitleCollectionViewCell.swift in Sources */,
+				08C1DCCB1FCBE74D00A051C0 /* DropDownReusableModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -472,11 +484,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = H7KTQF7AQ7;
+				DEVELOPMENT_TEAM = W77K56RT9J;
 				INFOPLIST_FILE = PhotoFrame/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = creativeitem.PhotoFrame.me;
+				PRODUCT_BUNDLE_IDENTIFIER = creativeitem.PhotoFrame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -490,11 +502,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = H7KTQF7AQ7;
+				DEVELOPMENT_TEAM = W77K56RT9J;
 				INFOPLIST_FILE = PhotoFrame/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = creativeitem.PhotoFrame.me;
+				PRODUCT_BUNDLE_IDENTIFIER = creativeitem.PhotoFrame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

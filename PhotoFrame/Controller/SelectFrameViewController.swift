@@ -10,14 +10,17 @@ import UIKit
 import Alamofire
 class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    let dropdown = DropDown()
-    
-    var imageID : Int!
-    var photosVC = PhotosViewController()
     let cellId = "SelecteFrameCollectionView"
+    
+    var photosVC = PhotosViewController()
+    var frameSizeArray = [FrameSizeModel]()
+    var imageSizeArray = [ImageSizeModel]()
+    var imageID : Int!
+    var frameSizeID : String! = "1"
+    var defaultImageSize : String!
+    var barButtonTitle : String! = "Small ▼"
     var imageToEdit: UIImage!
     var frameArray = [#imageLiteral(resourceName: "Frame-1"), #imageLiteral(resourceName: "Frame-2"), #imageLiteral(resourceName: "Frame-3"), #imageLiteral(resourceName: "Frame-4"), #imageLiteral(resourceName: "Frame-5"), #imageLiteral(resourceName: "Frame-6"), #imageLiteral(resourceName: "Frame-7"), #imageLiteral(resourceName: "Frame-8"), #imageLiteral(resourceName: "Frame-9"), #imageLiteral(resourceName: "Frame-10"), #imageLiteral(resourceName: "Frame-11"), #imageLiteral(resourceName: "Frame-12")]
-    var frameSizeArray = [String!]()
     
     lazy var selectedPhoto : UIImageView = {
         var photo = UIImageView()
@@ -79,6 +82,7 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(handleImageSize), for: .touchUpInside)
         button.titleLabel?.font = UIFont(name: TEXT_FONT, size: 14)
+        button.contentHorizontalAlignment = .right
         return button
     }()
     lazy var detailsButton: UIButton = {
@@ -132,6 +136,12 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
         photo.translatesAutoresizingMaskIntoConstraints = false
         return photo
     }()
+    
+    lazy var dropdown: DropDown = {
+        var drop = DropDown()
+        drop.selectFramVC = self
+        return drop
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = BG_COLOR
@@ -143,6 +153,8 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
         self.frame.image = self.frameArray[0]
         UserDefaults.standard.set("\(0)", forKey: FRAME_ID)
         self.overLayFrame()
+        
+        self.getDefaultImageSize()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -163,10 +175,10 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
         navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0, height: 3)
         navigationController?.navigationBar.layer.shadowRadius = 4.0
         navigationController?.navigationBar.layer.shadowOpacity = 0.1
-         let frameSizebutton: UIButton = {
+        let frameSizebutton: UIButton = {
             let button = UIButton(type: .system)
             button.contentHorizontalAlignment = .center
-            button.setTitle("Small ▼", for: .normal)
+            button.setTitle(self.barButtonTitle, for: .normal)
             button.setTitleColor(UIColor.black, for: .normal)
             button.translatesAutoresizingMaskIntoConstraints = false
             button.addTarget(self, action: #selector(handleFrameSizeButton), for: .touchUpInside)
@@ -233,7 +245,7 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
         photoSizeButton.centerYAnchor.constraint(equalTo: frameTitleLabe.centerYAnchor, constant: 15).isActive = true
         photoSizeButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         photoSizeButton.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.09).isActive = true
-        photoSizeButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.09).isActive = true
+        photoSizeButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.2).isActive = true
     }
     func setupDetailsButton(){
         view.addSubview(detailsButton)
@@ -265,6 +277,11 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
         frame.bottomAnchor.constraint(equalTo: selectedPhoto.bottomAnchor).isActive = true
     }
     
+    //change the title of button
+    func changePhotoSizeButtonTitle(title: String!){
+        self.photoSizeButton.setTitle(title, for: .normal)
+    }
+    
     //collection view delegate methods
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -288,7 +305,6 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         UserDefaults.standard.set("\(indexPath.row)", forKey: FRAME_ID)
-        print("Frame Number: \(indexPath.row)")
         self.frame.image = frameArray[indexPath.row]
         self.overLayFrame()
     }
@@ -313,26 +329,24 @@ extension SelectFrameViewController {
     }
     
     @objc func handleFrameSizeButton(){
-        self.handleFrameSize()
-        dropdown.coordinateX = 0
-        dropdown.coordinateX = 0
-        dropdown.navigationBarHeight = self.navigationController?.navigationBar.frame.height
-        dropdown.show()
+        self.dropdown.navigationBarHeight = self.navigationController?.navigationBar.frame.height
+        self.dropdown.coordinateX         = 0
+        self.dropdown.coordinateX         = 0
+        self.getFrameSizeFromAPI()
+    }
+    
+    @objc func handleImageSize(){
+        self.dropdown.navigationBarHeight = self.navigationController?.navigationBar.frame.height
+        self.dropdown.coordinateX         = self.photoSizeButton.frame.origin.x
+        self.dropdown.coordinateY         = self.photoSizeButton.frame.origin.y
+        self.getImageSizeFromAPI()
     }
     
     @objc func handleContinueButton(){
-        print("Crop Image tapped")
         let editSelectedPhotoVC = EditSelectedPhotoViewController()
         self.imageToEdit = self.selectedPhoto.image!
         editSelectedPhotoVC.rawPhoto = self.imageToEdit
         self.navigationController?.pushViewController(editSelectedPhotoVC, animated: true)
-    }
-    
-    @objc func handleImageSize(){
-        dropdown.coordinateX         = self.photoSizeButton.frame.origin.x
-        dropdown.coordinateY         = self.photoSizeButton.frame.origin.y
-        dropdown.navigationBarHeight = self.navigationController?.navigationBar.frame.height
-        dropdown.show()
     }
 }
 
@@ -358,22 +372,65 @@ extension SelectFrameViewController: UICollectionViewDelegateFlowLayout {
 
 // API Calls section
 extension SelectFrameViewController {
-    func handleFrameSize(){
-        guard let url = URL(string: "\(API_URL)") else { return }
+    func getFrameSizeFromAPI(){
+        guard let url = URL(string: "\(API_URL)get_frame_size") else { return }
         //let params = ["authenticate": "true"] as [String: Any]
         Alamofire.request(url, method: .post, parameters: nil, encoding: URLEncoding.httpBody, headers: nil).responseJSON(completionHandler: {
             response in
             guard response.result.isSuccess else {
                 return
             }
-            print(response)
+            if !self.frameSizeArray.isEmpty{
+                self.frameSizeArray.removeAll()
+            }
             if let responseData = response.data {
                 let json = JSON(data: responseData)
                 if let dictArray = json.array {
                     for dict in dictArray {
-                        
+                        let data = FrameSizeModel(id: dict["frame_size_id"].string!, title: dict["frame_size_title"].string!)
+                        self.frameSizeArray.append(data)
                     }
                 }
+                self.dropdown.show(withData: self.frameSizeArray)
+            }
+        })
+    }
+    
+    func getImageSizeFromAPI(){
+        guard let url = URL(string: "\(API_URL)get_image_size") else { return }
+        let params = ["frame_size_id": self.frameSizeID] as [String: Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: URLEncoding.httpBody, headers: nil).responseJSON(completionHandler: {
+            response in
+            guard response.result.isSuccess else {
+                return
+            }
+            if !self.imageSizeArray.isEmpty{
+                self.imageSizeArray.removeAll()
+            }
+            if let responseData = response.data {
+                let json = JSON(data: responseData)
+                if let dictArray = json.array {
+                    for dict in dictArray {
+                        let data = ImageSizeModel(imageSizeId: dict["image_size_id"].string!, imageSizeTitle: dict["image_size_title"].string!, frameSizeId: dict["frame_size_id"].string!)
+                        self.imageSizeArray.append(data)
+                    }
+                }
+                self.dropdown.show(withData: self.imageSizeArray)
+            }
+        })
+    }
+    
+    func getDefaultImageSize(){
+        guard let url = URL(string: "\(API_URL)get_default_image_size") else { return }
+        let params = ["frame_size_id": self.frameSizeID] as [String: Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: URLEncoding.httpBody, headers: nil).responseString(completionHandler: {
+            response in
+            guard response.result.isSuccess else {
+                return
+            }
+            if response.data != nil {
+                self.defaultImageSize = response.value! + " ▼"
+                self.changePhotoSizeButtonTitle(title: self.defaultImageSize)
             }
         })
     }

@@ -17,6 +17,7 @@ class DropDownCell: UITableViewCell {
         label.font = UIFont(name: TEXT_FONT, size: 14)
         label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
         return label
     }()
     
@@ -40,6 +41,7 @@ class DropDownCell: UITableViewCell {
     func setupTitleLabel() {
         self.addSubview(titleLabel)
         titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         titleLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5).isActive = true
         titleLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
     }
