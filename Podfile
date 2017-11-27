@@ -8,5 +8,6 @@ target 'PhotoFrame' do
   use_frameworks!
 pod 'AKImageCropperView'
 pod 'Alamofire', '~> 4.5'
+pod 'SDWebImage'
 
 end

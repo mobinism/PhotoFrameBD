@@ -1,15 +1,20 @@
 PODS:
   - AKImageCropperView (2.0.0)
   - Alamofire (4.5.1)
+  - SDWebImage (4.2.1):
+    - SDWebImage/Core (= 4.2.1)
+  - SDWebImage/Core (4.2.1)
 
 DEPENDENCIES:
   - AKImageCropperView
   - Alamofire (~> 4.5)
+  - SDWebImage
 
 SPEC CHECKSUMS:
   AKImageCropperView: 9c80fd45512daa69426161ad51c248655c1b5182
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
+  SDWebImage: 1fa4c9edf525b744f002db89f3f5a38b3cd4c541
 
-PODFILE CHECKSUM: 86a1919d077bbdba2c54bf2de907d09738517a3a
+PODFILE CHECKSUM: ca5dce817a0f5086c8af45267d803922dde84378
 
 COCOAPODS: 1.3.1

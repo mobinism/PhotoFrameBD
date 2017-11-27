@@ -17,10 +17,13 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
     var imageSizeArray = [ImageSizeModel]()
     var imageID : Int!
     var frameSizeID : String! = "1"
+    var imageSizeID : String! = "1"
     var defaultImageSize : String!
     var barButtonTitle : String! = "Small ▼"
     var imageToEdit: UIImage!
     var frameArray = [#imageLiteral(resourceName: "Frame-1"), #imageLiteral(resourceName: "Frame-2"), #imageLiteral(resourceName: "Frame-3"), #imageLiteral(resourceName: "Frame-4"), #imageLiteral(resourceName: "Frame-5"), #imageLiteral(resourceName: "Frame-6"), #imageLiteral(resourceName: "Frame-7"), #imageLiteral(resourceName: "Frame-8"), #imageLiteral(resourceName: "Frame-9"), #imageLiteral(resourceName: "Frame-10"), #imageLiteral(resourceName: "Frame-11"), #imageLiteral(resourceName: "Frame-12")]
+    var frameURLs = [FrameFetchingModel]()
+    var defaultImageSizeDetails = [DefaultImageSize]()
     
     lazy var selectedPhoto : UIImageView = {
         var photo = UIImageView()
@@ -162,6 +165,7 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
         if  frame.image == nil{
             UserDefaults.standard.set("-1", forKey: FRAME_ID)
         }
+        self.getFrames()
         self.customNavigationBar()
     }
     func customNavigationBar(){
@@ -288,13 +292,15 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.frameArray.count
+        return self.frameURLs.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? SelectFrameCollectionViewCell {
-            cell.frameImage = self.frameArray[indexPath.row]
-            cell.frameTitle = "Title"
+            
+            //cell.selectFrame.sd_setImage(with: URL(string: frameURLs[indexPath.row]))
+            cell.selectFrame.sd_setImage(with: URL(string: frameURLs[indexPath.row].frameUrl), placeholderImage: #imageLiteral(resourceName: "loading"), options: [.continueInBackground, .progressiveDownload])
+            cell.frameTitle = frameURLs[indexPath.row].frameTitle
             return cell
         }
         else{
@@ -423,14 +429,53 @@ extension SelectFrameViewController {
     func getDefaultImageSize(){
         guard let url = URL(string: "\(API_URL)get_default_image_size") else { return }
         let params = ["frame_size_id": self.frameSizeID] as [String: Any]
+        Alamofire.request(url, method: .post, parameters: params, encoding: URLEncoding.httpBody, headers: nil).responseJSON(completionHandler: {
+            response in
+            guard response.result.isSuccess else {
+                return
+            }
+            if !self.defaultImageSizeDetails.isEmpty{
+                self.defaultImageSizeDetails.removeAll()
+            }
+            if let responseData = response.data {
+                let json = JSON(data: responseData)
+                if let dictArray = json.array {
+                    for dict in dictArray {
+                        let data = DefaultImageSize(imageSizeTitle: dict["image_size_title"].string!, imageSizeId: dict["image_size_id"].string!)
+                        self.defaultImageSize = data.imageSizeTitle
+                        self.imageSizeID      = data.imageSizeId
+                        self.frameCollectionView.reloadData()
+                    }
+                }
+            }
+        })
+    }
+    
+    // fetch frames from api
+    func getFrames(){
+        
+        print(self.frameSizeID)
+        print(self.imageSizeID)
+        guard let url = URL(string: "\(API_URL)get_frames") else { return }
+        let params = ["frame_size_id": self.frameSizeID,
+                      "image_size_id": self.imageSizeID] as [String: Any]
         Alamofire.request(url, method: .post, parameters: params, encoding: URLEncoding.httpBody, headers: nil).responseString(completionHandler: {
             response in
             guard response.result.isSuccess else {
                 return
             }
-            if response.data != nil {
-                self.defaultImageSize = response.value! + " ▼"
-                self.changePhotoSizeButtonTitle(title: self.defaultImageSize)
+            if !self.frameURLs.isEmpty{
+                self.frameURLs.removeAll()
+            }
+            if let responseData = response.data {
+                let json = JSON(data: responseData)
+                if let dictArray = json.array {
+                    for dict in dictArray {
+                        let data = FrameFetchingModel(frameUrl: dict["image_url"].string!, frameTitle: dict["title"].string!)
+                        self.frameURLs.append(data)
+                        self.frameCollectionView.reloadData()
+                    }
+                }
             }
         })
     }
