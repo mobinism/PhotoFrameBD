@@ -252,18 +252,6 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
         }
     }
 }
- //MARK: PHOTO LIBRARY CHANGE OBSERVER
-//extension PhotosViewController: PHPhotoLibraryChangeObserver {
-//    func photoLibraryDidChange(_ changeInstance: PHChange) {
-//        guard let changes = changeInstance.changeDetails(for: fetchedPhotos) else { return }
-//        DispatchQueue.main.sync {
-//            fetchedPhotos = changes.fetchResultAfterChanges
-//            self.collectionView.reloadData()
-//            self.albumTitleCollectionView.reloadData()
-//            print("Observer")
-//        }
-//    }
-//}
 
 extension PhotosViewController: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
@@ -280,7 +268,7 @@ extension PhotosViewController: PHPhotoLibraryChangeObserver {
                 self.albumTitleCollectionView.reloadData()
             }
             else{
-               print("Better Luck Next Time Dude")
+               //print("Better Luck Next Time Dude")
             }
         }
     }

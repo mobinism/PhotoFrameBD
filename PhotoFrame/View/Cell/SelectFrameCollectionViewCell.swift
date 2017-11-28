@@ -11,7 +11,7 @@ class SelectFrameCollectionViewCell: UICollectionViewCell {
     
     lazy var selectFrame : UIImageView = {
         var frame = UIImageView()
-        frame.contentMode = .scaleAspectFill
+        frame.contentMode = .scaleAspectFit
         frame.clipsToBounds = true
         frame.translatesAutoresizingMaskIntoConstraints = false
         return frame

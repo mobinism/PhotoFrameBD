@@ -20,13 +20,12 @@ class SelectFrameViewController: UIViewController{
     var defaultImageSizeTitle : String!
     var barButtonTitle : String! = "Small ▼"
     var imageToEdit: UIImage!
-    var frameArray = [#imageLiteral(resourceName: "Frame-1"), #imageLiteral(resourceName: "Frame-2"), #imageLiteral(resourceName: "Frame-3"), #imageLiteral(resourceName: "Frame-4"), #imageLiteral(resourceName: "Frame-5"), #imageLiteral(resourceName: "Frame-6"), #imageLiteral(resourceName: "Frame-7"), #imageLiteral(resourceName: "Frame-8"), #imageLiteral(resourceName: "Frame-9"), #imageLiteral(resourceName: "Frame-10"), #imageLiteral(resourceName: "Frame-11"), #imageLiteral(resourceName: "Frame-12")]
     var frameURLs = [FrameFetchingModel]()
     var defaultImageSizeDetails = [DefaultImageSize]()
     
     lazy var selectedPhoto : UIImageView = {
         var photo = UIImageView()
-        photo.contentMode = .scaleAspectFit
+        photo.contentMode = .scaleAspectFill
         photo.clipsToBounds = true
         photo.translatesAutoresizingMaskIntoConstraints = false
         photo.isUserInteractionEnabled = true
@@ -36,7 +35,6 @@ class SelectFrameViewController: UIViewController{
     }()
     lazy var frame : UIImageView = {
         var photo = UIImageView()
-        photo.backgroundColor = .red
         photo.contentMode = .scaleAspectFit
         photo.clipsToBounds = true
         photo.translatesAutoresizingMaskIntoConstraints = false
@@ -165,7 +163,6 @@ class SelectFrameViewController: UIViewController{
         self.navigationItem.hidesBackButton = true
         let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(self.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
-        self.frame.image = self.frameArray[0]
         
         self.overLayFrame()
         self.getDefaultImageSize()
@@ -173,6 +170,7 @@ class SelectFrameViewController: UIViewController{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.getFrames()
+        self.overLayFrame()
         self.customNavigationBar()
     }
     func customNavigationBar(){
@@ -203,6 +201,7 @@ class SelectFrameViewController: UIViewController{
         let alertView = UIAlertController(title: "Are You Sure?", message: "Your customizations will no longer exist.", preferredStyle: UIAlertControllerStyle.actionSheet)
         
         alertView.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { (action: UIAlertAction!) in
+            
             self.navigationController?.popViewController(animated: true)
         }))
         
@@ -227,7 +226,6 @@ class SelectFrameViewController: UIViewController{
         view.addSubview(selectedPhoto)
         selectedPhoto.topAnchor.constraint(equalTo: view.topAnchor, constant: 25).isActive = true
         selectedPhoto.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        selectedPhoto.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6).isActive = true
         selectedPhoto.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7).isActive = true
     }
     func setupFrameTitleLabel(){
@@ -282,11 +280,12 @@ class SelectFrameViewController: UIViewController{
         
     }
     func overLayFrame(){
+        self.frame.sd_setImage(with: URL(string: "\(UserDefaults.standard.value(forKey: FRAME_URL) as! String)"))
         view.addSubview(self.frame)
         frame.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         frame.topAnchor.constraint(equalTo: view.topAnchor, constant: 25).isActive = true
-        frame.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6).isActive = true
         frame.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7).isActive = true
+        frame.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6).isActive = true
     }
     func setupNoFrameMessage(){
         view.addSubview(noFrameMessage)
@@ -328,12 +327,12 @@ extension SelectFrameViewController : UICollectionViewDelegate, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         UserDefaults.standard.set(frameURLs[indexPath.row].frameUrl, forKey: FRAME_URL)
-        self.frame.sd_setImage(with: URL(string: frameURLs[indexPath.row].frameUrl))
-        
+        self.frameTitleLabe.text = self.frameURLs[indexPath.row].frameTitle
 //        let screenSize = UIScreen.main.bounds
 //        let screenWidth = screenSize.width
-//        let screenHeight = screenSize.height
         self.overLayFrame()
+        self.selectedPhoto.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6).isActive = true
+        self.view.layoutIfNeeded()
     }
 }
 // action methods
@@ -355,6 +354,7 @@ extension SelectFrameViewController {
     }
     
     @objc func handleFrameSizeButton(){
+        print("Button working")
         self.dropdown.navigationBarHeight = self.navigationController?.navigationBar.frame.height
         self.dropdown.coordinateX         = 0
         self.dropdown.coordinateX         = 0
@@ -500,6 +500,7 @@ extension SelectFrameViewController {
                         self.frameCollectionView.reloadData()
                         if counter == 0{
                             UserDefaults.standard.set(self.frameURLs[0].frameUrl, forKey: FRAME_URL)
+                            self.frameTitleLabe.text = self.frameURLs[0].frameTitle
                             counter = counter + 1
                         }
                     }
