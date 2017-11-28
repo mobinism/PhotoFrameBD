@@ -28,15 +28,14 @@ class ShippingAndPaymentViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //print(UserDefaults.standard.value(forKey: FRAME_ID) as! String)
+        //print(UserDefaults.standard.value(forKey: FRAME_URL) as! String)
         self.navigationItem.hidesBackButton = true
         view.backgroundColor = BG_COLOR
         let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(self.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
-        let frameID : Int = Int(UserDefaults.standard.value(forKey: FRAME_ID) as! String)!
-        if frameID >= 0 {
-            self.frame.image = self.frameArray[frameID]
-        }
+        
+        // setting the frame from session
+        self.frame.sd_setImage(with: URL(string: "\(UserDefaults.standard.value(forKey: FRAME_URL) as! String)"))
         setupUI()
     }
     @objc func back(sender: UIBarButtonItem) {

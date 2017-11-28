@@ -8,17 +8,16 @@
 
 import UIKit
 import Alamofire
-class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class SelectFrameViewController: UIViewController{
     
     let cellId = "SelecteFrameCollectionView"
-    
     var photosVC = PhotosViewController()
     var frameSizeArray = [FrameSizeModel]()
     var imageSizeArray = [ImageSizeModel]()
     var imageID : Int!
     var frameSizeID : String! = "1"
     var imageSizeID : String! = "1"
-    var defaultImageSize : String!
+    var defaultImageSizeTitle : String!
     var barButtonTitle : String! = "Small ▼"
     var imageToEdit: UIImage!
     var frameArray = [#imageLiteral(resourceName: "Frame-1"), #imageLiteral(resourceName: "Frame-2"), #imageLiteral(resourceName: "Frame-3"), #imageLiteral(resourceName: "Frame-4"), #imageLiteral(resourceName: "Frame-5"), #imageLiteral(resourceName: "Frame-6"), #imageLiteral(resourceName: "Frame-7"), #imageLiteral(resourceName: "Frame-8"), #imageLiteral(resourceName: "Frame-9"), #imageLiteral(resourceName: "Frame-10"), #imageLiteral(resourceName: "Frame-11"), #imageLiteral(resourceName: "Frame-12")]
@@ -33,6 +32,14 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
         photo.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         photo.addGestureRecognizer(tapGestureRecognizer)
+        return photo
+    }()
+    lazy var frame : UIImageView = {
+        var photo = UIImageView()
+        photo.backgroundColor = .red
+        photo.contentMode = .scaleAspectFit
+        photo.clipsToBounds = true
+        photo.translatesAutoresizingMaskIntoConstraints = false
         return photo
     }()
     lazy var frameTitleLabe : UILabel = {
@@ -132,12 +139,17 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
         return collection
     }()
     
-    lazy var frame : UIImageView = {
-        var photo = UIImageView()
-        photo.contentMode = .scaleAspectFill
-        photo.clipsToBounds = true
-        photo.translatesAutoresizingMaskIntoConstraints = false
-        return photo
+    lazy var noFrameMessage : UILabel = {
+        let label = UILabel()
+        label.text = "Selected Item Has No Frames"
+        label.font = UIFont(name: TEXT_FONT, size: 17)
+        label.backgroundColor = UIColor.white
+        label.textColor = .black
+        label.clipsToBounds = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.alpha = 0
+        return label
     }()
     
     lazy var dropdown: DropDown = {
@@ -154,17 +166,12 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
         let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(self.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
         self.frame.image = self.frameArray[0]
-        UserDefaults.standard.set("\(0)", forKey: FRAME_ID)
-        self.overLayFrame()
         
+        self.overLayFrame()
         self.getDefaultImageSize()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if  frame.image == nil{
-            UserDefaults.standard.set("-1", forKey: FRAME_ID)
-        }
         self.getFrames()
         self.customNavigationBar()
     }
@@ -214,6 +221,7 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
         setupDetailsButton()
         setupDetailsContinue()
         setupFrameCollectionView()
+        setupNoFrameMessage()
     }
     func setupSelectedImageView(){
         view.addSubview(selectedPhoto)
@@ -274,18 +282,27 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
         
     }
     func overLayFrame(){
-        selectedPhoto.addSubview(frame)
-        frame.topAnchor.constraint(equalTo: selectedPhoto.topAnchor).isActive = true
-        frame.leftAnchor.constraint(equalTo: selectedPhoto.leftAnchor).isActive = true
-        frame.rightAnchor.constraint(equalTo: selectedPhoto.rightAnchor).isActive = true
-        frame.bottomAnchor.constraint(equalTo: selectedPhoto.bottomAnchor).isActive = true
+        view.addSubview(self.frame)
+        frame.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        frame.topAnchor.constraint(equalTo: view.topAnchor, constant: 25).isActive = true
+        frame.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6).isActive = true
+        frame.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7).isActive = true
     }
-    
+    func setupNoFrameMessage(){
+        view.addSubview(noFrameMessage)
+        noFrameMessage.centerXAnchor.constraint(equalTo:view.centerXAnchor).isActive = true
+        noFrameMessage.bottomAnchor.constraint(equalTo: self.continueButton.topAnchor).isActive = true
+        noFrameMessage.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2).isActive = true
+        noFrameMessage.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1).isActive = true
+    }
     //change the title of button
     func changePhotoSizeButtonTitle(title: String!){
         self.photoSizeButton.setTitle(title, for: .normal)
     }
-    
+}
+
+//Collection view delegate emthods
+extension SelectFrameViewController : UICollectionViewDelegate, UICollectionViewDataSource{
     //collection view delegate methods
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -310,12 +327,15 @@ class SelectFrameViewController: UIViewController, UICollectionViewDelegate, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        UserDefaults.standard.set("\(indexPath.row)", forKey: FRAME_ID)
-        self.frame.image = frameArray[indexPath.row]
+        UserDefaults.standard.set(frameURLs[indexPath.row].frameUrl, forKey: FRAME_URL)
+        self.frame.sd_setImage(with: URL(string: frameURLs[indexPath.row].frameUrl))
+        
+//        let screenSize = UIScreen.main.bounds
+//        let screenWidth = screenSize.width
+//        let screenHeight = screenSize.height
         self.overLayFrame()
     }
 }
-
 // action methods
 extension SelectFrameViewController {
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer){
@@ -359,7 +379,7 @@ extension SelectFrameViewController {
 extension SelectFrameViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (collectionView.frame.width * 0.25)
-        let height = (collectionView.frame.height * 0.8)
+        let height = (collectionView.frame.height * 0.85)
         return CGSize(width: width, height: height)
     }
     
@@ -442,9 +462,10 @@ extension SelectFrameViewController {
                 if let dictArray = json.array {
                     for dict in dictArray {
                         let data = DefaultImageSize(imageSizeTitle: dict["image_size_title"].string!, imageSizeId: dict["image_size_id"].string!)
-                        self.defaultImageSize = data.imageSizeTitle
+                        self.defaultImageSizeTitle = data.imageSizeTitle + " ▼"
                         self.imageSizeID      = data.imageSizeId
-                        self.frameCollectionView.reloadData()
+                        self.changePhotoSizeButtonTitle(title: self.defaultImageSizeTitle)
+                        self.getFrames()
                     }
                 }
             }
@@ -453,9 +474,7 @@ extension SelectFrameViewController {
     
     // fetch frames from api
     func getFrames(){
-        
-        print(self.frameSizeID)
-        print(self.imageSizeID)
+        var counter = 0
         guard let url = URL(string: "\(API_URL)get_frames") else { return }
         let params = ["frame_size_id": self.frameSizeID,
                       "image_size_id": self.imageSizeID] as [String: Any]
@@ -473,7 +492,20 @@ extension SelectFrameViewController {
                     for dict in dictArray {
                         let data = FrameFetchingModel(frameUrl: dict["image_url"].string!, frameTitle: dict["title"].string!)
                         self.frameURLs.append(data)
+                    }
+                    
+                    if  self.frameURLs.count > 0{
+                        self.frameCollectionView.alpha = 1
+                        self.noFrameMessage.alpha      = 0
                         self.frameCollectionView.reloadData()
+                        if counter == 0{
+                            UserDefaults.standard.set(self.frameURLs[0].frameUrl, forKey: FRAME_URL)
+                            counter = counter + 1
+                        }
+                    }
+                    else{
+                        self.frameCollectionView.alpha = 0
+                        self.noFrameMessage.alpha      = 1
                     }
                 }
             }

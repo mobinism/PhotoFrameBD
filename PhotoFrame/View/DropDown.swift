@@ -162,8 +162,6 @@ extension DropDown: UITableViewDelegate, UITableViewDataSource {
             self.selectFramVC.barButtonTitle = "\(data[indexPath.row].title) ▼"
             self.selectFramVC.customNavigationBar()
             self.selectFramVC.getDefaultImageSize()
-            
-            self.selectFramVC.getFrames()
         }
         if let data = selectorData as? [ImageSizeModel] {
             self.selectFramVC.changePhotoSizeButtonTitle(title: "\(data[indexPath.row].imageSizeTitle) ▼")
