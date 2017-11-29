@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import GMStepper
 class ShippingAndPaymentViewController: UIViewController {
     
     let cellID = "PaymentDetailsTableCell"

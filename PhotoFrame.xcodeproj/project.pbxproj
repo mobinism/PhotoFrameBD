@@ -31,6 +31,8 @@
 		08AA00AA1FA0791C000DC131 /* PhotosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08AA00A91FA0791C000DC131 /* PhotosCollectionViewCell.swift */; };
 		08C1DCCB1FCBE74D00A051C0 /* DropDownReusableModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C1DCCA1FCBE74D00A051C0 /* DropDownReusableModel.swift */; };
 		13BDD34E2A1C552FB55ABE0A /* Pods_PhotoFrame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3D169826654FB3B8087AC8C /* Pods_PhotoFrame.framework */; };
+		1D89CA901FCF2DE20074A1C9 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D89CA8F1FCF2DE20074A1C9 /* Reachability.swift */; };
+		1D89CA921FCF37200074A1C9 /* InternetConnectionAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D89CA911FCF37200074A1C9 /* InternetConnectionAlert.swift */; };
 		1DB95D741FCB2B0F0007D59B /* DropDown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB95D731FCB2B0F0007D59B /* DropDown.swift */; };
 		1DC741C31FCCA46000BBF6BB /* FrameFetchingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC741C21FCCA46000BBF6BB /* FrameFetchingModel.swift */; };
 /* End PBXBuildFile section */
@@ -62,6 +64,8 @@
 		08AA00A91FA0791C000DC131 /* PhotosCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosCollectionViewCell.swift; sourceTree = "<group>"; };
 		08C1DCCA1FCBE74D00A051C0 /* DropDownReusableModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownReusableModel.swift; sourceTree = "<group>"; };
 		113AE12AAE3563DC348328E6 /* Pods-PhotoFrame.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoFrame.release.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoFrame/Pods-PhotoFrame.release.xcconfig"; sourceTree = "<group>"; };
+		1D89CA8F1FCF2DE20074A1C9 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		1D89CA911FCF37200074A1C9 /* InternetConnectionAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionAlert.swift; sourceTree = "<group>"; };
 		1DB95D731FCB2B0F0007D59B /* DropDown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDown.swift; sourceTree = "<group>"; };
 		1DC741BF1FCC91D500BBF6BB /* PhotoFrame-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PhotoFrame-Bridging-Header.h"; sourceTree = "<group>"; };
 		1DC741C21FCCA46000BBF6BB /* FrameFetchingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameFetchingModel.swift; sourceTree = "<group>"; };
@@ -152,6 +156,8 @@
 				0856AD5E1FBB061D0006AA0F /* ShippingAndPaymentViewController.swift */,
 				082752721FC2B0EF005774CC /* CustomImageCropperOverlayView.swift */,
 				1DC741BF1FCC91D500BBF6BB /* PhotoFrame-Bridging-Header.h */,
+				1D89CA8F1FCF2DE20074A1C9 /* Reachability.swift */,
+				1D89CA911FCF37200074A1C9 /* InternetConnectionAlert.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -321,12 +327,14 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-PhotoFrame/Pods-PhotoFrame-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AKImageCropperView/AKImageCropperView.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/GMStepper/GMStepper.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AKImageCropperView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GMStepper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -359,6 +367,8 @@
 				1DB95D741FCB2B0F0007D59B /* DropDown.swift in Sources */,
 				0818AF9A1F8CDCA400A5F0E5 /* FrameCollectionViewCell.swift in Sources */,
 				0835BF5A1FCAB6790085A60F /* SwiftyJSON.swift in Sources */,
+				1D89CA901FCF2DE20074A1C9 /* Reachability.swift in Sources */,
+				1D89CA921FCF37200074A1C9 /* InternetConnectionAlert.swift in Sources */,
 				0818AF951F8CD6FC00A5F0E5 /* SelectSizeViewController.swift in Sources */,
 				085802C01FA1EBE300D81C3F /* AlbumTitleCollectionViewCell.swift in Sources */,
 				08C1DCCB1FCBE74D00A051C0 /* DropDownReusableModel.swift in Sources */,
@@ -494,11 +504,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = W77K56RT9J;
+				DEVELOPMENT_TEAM = H7KTQF7AQ7;
 				INFOPLIST_FILE = PhotoFrame/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = creativeitem.PhotoFrame;
+				PRODUCT_BUNDLE_IDENTIFIER = creativeitem.PhotoFrame.me;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "PhotoFrame/Controller/PhotoFrame-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -515,11 +525,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = W77K56RT9J;
+				DEVELOPMENT_TEAM = H7KTQF7AQ7;
 				INFOPLIST_FILE = PhotoFrame/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = creativeitem.PhotoFrame;
+				PRODUCT_BUNDLE_IDENTIFIER = creativeitem.PhotoFrame.me;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "PhotoFrame/Controller/PhotoFrame-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;

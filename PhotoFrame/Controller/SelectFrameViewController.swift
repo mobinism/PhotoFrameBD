@@ -170,6 +170,7 @@ class SelectFrameViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = BG_COLOR
+        self.checkReachability()
         setupUI()
         frameCollectionView.register(SelectFrameCollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         self.navigationItem.hidesBackButton = true
@@ -323,6 +324,20 @@ class SelectFrameViewController: UIViewController{
     //change the title of button
     func changePhotoSizeButtonTitle(title: String!){
         self.photoSizeButton.setTitle(title, for: .normal)
+    }
+    
+    //check reachability
+    func checkReachability(){
+        let reachability = Reachability()
+        let isConnected = reachability.connectedToNetwork()
+        
+        if isConnected{
+            let modalController = InternetConnectionAlert()
+            modalController.alertTitle.text   = "Oopps!!"
+            modalController.alertMessage.text = "Check The Internet Connection!!"
+            modalController.modalPresentationStyle = .overCurrentContext
+            present(modalController, animated: true, completion: nil)
+        }
     }
 }
 

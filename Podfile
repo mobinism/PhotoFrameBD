@@ -9,5 +9,6 @@ target 'PhotoFrame' do
 pod 'AKImageCropperView'
 pod 'Alamofire', '~> 4.5'
 pod 'SDWebImage'
+pod "GMStepper"
 
 end

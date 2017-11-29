@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '8BAEFA6DD8B01550D329254186C61313'
-               BlueprintName = 'SDWebImage'
+               BlueprintIdentifier = '6DB34ADEAC543008FDA771D13AE6F534'
+               BlueprintName = 'GMStepper'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'SDWebImage.framework'>
+               BuildableName = 'GMStepper.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
