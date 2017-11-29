@@ -6,7 +6,7 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "11R-5.png",
+      "filename" : "reload-icon-grey.png",
       "scale" : "2x"
     },
     {
@@ -17,5 +17,8 @@
   "info" : {
     "version" : 1,
     "author" : "xcode"
+  },
+  "properties" : {
+    "template-rendering-intent" : "original"
   }
 }

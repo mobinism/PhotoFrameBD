@@ -42,7 +42,6 @@ class SelectFrameViewController: UIViewController{
     }()
     lazy var frameTitleLabe : UILabel = {
         let label = UILabel()
-        label.text = "Frame Name"
         label.font = UIFont.boldSystemFont(ofSize: 19)
         label.textColor = .black
         label.clipsToBounds = true
@@ -62,7 +61,6 @@ class SelectFrameViewController: UIViewController{
     }()
     lazy var framePriceLabel : UILabel = {
         let label = UILabel()
-        label.text = "299 - BDT"
         label.textColor = UIColor(red:1.00, green:0.54, blue:0.40, alpha:1.0)
         label.font = UIFont(name: TEXT_FONT, size: 17)
         label.clipsToBounds = true
@@ -82,6 +80,20 @@ class SelectFrameViewController: UIViewController{
         button.addTarget(self, action: #selector(handleCropButton), for: .touchUpInside)
         return button
     }()
+    
+    lazy var rotateButton : UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named:"reload-icon-grey"), for: .normal)
+        button.contentHorizontalAlignment = .center
+        button.imageEdgeInsets = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 5)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0,left: 5,bottom: 0,right: 0)
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.backgroundColor = BG_COLOR
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(handleRotateButton), for: .touchUpInside)
+        return button
+    }()
+    
     lazy var photoSizeButton : UIButton = {
         let button = UIButton(type: .system)
         button.contentHorizontalAlignment = .center
@@ -164,13 +176,14 @@ class SelectFrameViewController: UIViewController{
         let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(self.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
         
-        self.overLayFrame()
         self.getDefaultImageSize()
+        self.getFrames()
+        self.setupWithRatio()
+        self.overLayFrame()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.getFrames()
-        self.overLayFrame()
+        //self.overLayFrame()
         self.customNavigationBar()
     }
     func customNavigationBar(){
@@ -212,25 +225,22 @@ class SelectFrameViewController: UIViewController{
     }
     func setupUI(){
         setupSelectedImageView()
-        setupFrameTitleLabel()
-        setupFrameSizeLabel()
-        setupFramePriceLabel()
-        setupCropButton()
-        setupPhotoSizeButton()
         setupDetailsButton()
         setupDetailsContinue()
         setupFrameCollectionView()
         setupNoFrameMessage()
     }
     func setupSelectedImageView(){
+        let viewWidth = self.view.frame.width
+        let imageViewHeight = ((viewWidth * 0.7) - (63 * 2))
         view.addSubview(selectedPhoto)
-        selectedPhoto.topAnchor.constraint(equalTo: view.topAnchor, constant: 25).isActive = true
+        selectedPhoto.topAnchor.constraint(equalTo: view.topAnchor, constant: (25 + 63)).isActive = true
         selectedPhoto.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        selectedPhoto.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7).isActive = true
+        selectedPhoto.heightAnchor.constraint(equalToConstant: imageViewHeight).isActive = true
     }
     func setupFrameTitleLabel(){
         view.addSubview(frameTitleLabe)
-        frameTitleLabe.topAnchor.constraint(equalTo: selectedPhoto.bottomAnchor, constant: 35).isActive = true
+        frameTitleLabe.topAnchor.constraint(equalTo: frame.bottomAnchor, constant: 35).isActive = true
         frameTitleLabe.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     func setupFrameSizeLabel(){
@@ -248,7 +258,14 @@ class SelectFrameViewController: UIViewController{
         cropButton.centerYAnchor.constraint(equalTo: frameTitleLabe.centerYAnchor, constant: 15).isActive = true
         cropButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
         cropButton.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.09).isActive = true
-        cropButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.09).isActive = true
+        cropButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.1).isActive = true
+    }
+    func setupRotateButton(){
+        view.addSubview(rotateButton)
+        rotateButton.centerXAnchor.constraint(equalTo: cropButton.centerXAnchor).isActive = true
+        rotateButton.topAnchor.constraint(equalTo: cropButton.bottomAnchor, constant: 15).isActive = true
+        rotateButton.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.09).isActive = true
+        rotateButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.1).isActive = true
     }
     func setupPhotoSizeButton(){
         view.addSubview(photoSizeButton)
@@ -277,15 +294,19 @@ class SelectFrameViewController: UIViewController{
         frameCollectionView.bottomAnchor.constraint(equalTo: self.continueButton.topAnchor).isActive = true
         frameCollectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2).isActive = true
         frameCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1).isActive = true
-        
     }
     func overLayFrame(){
-        self.frame.sd_setImage(with: URL(string: "\(UserDefaults.standard.value(forKey: FRAME_URL) as! String)"))
         view.addSubview(self.frame)
         frame.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         frame.topAnchor.constraint(equalTo: view.topAnchor, constant: 25).isActive = true
         frame.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7).isActive = true
-        frame.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6).isActive = true
+        
+        setupFrameTitleLabel()
+        setupFrameSizeLabel()
+        setupFramePriceLabel()
+        setupCropButton()
+        setupRotateButton()
+        setupPhotoSizeButton()
     }
     func setupNoFrameMessage(){
         view.addSubview(noFrameMessage)
@@ -293,6 +314,11 @@ class SelectFrameViewController: UIViewController{
         noFrameMessage.bottomAnchor.constraint(equalTo: self.continueButton.topAnchor).isActive = true
         noFrameMessage.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2).isActive = true
         noFrameMessage.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1).isActive = true
+    }
+    func setupWithRatio(){
+        UIView.animate(withDuration: 0.3) {
+            self.selectedPhoto.widthAnchor.constraint(equalTo: self.selectedPhoto.heightAnchor, multiplier: 0.8).isActive = true
+        }
     }
     //change the title of button
     func changePhotoSizeButtonTitle(title: String!){
@@ -327,11 +353,13 @@ extension SelectFrameViewController : UICollectionViewDelegate, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         UserDefaults.standard.set(frameURLs[indexPath.row].frameUrl, forKey: FRAME_URL)
+        UserDefaults.standard.set(frameURLs[indexPath.row].framePrice, forKey: FRAME_PRICE)
+        self.frame.sd_setImage(with: URL(string: "\(UserDefaults.standard.value(forKey: FRAME_URL) as! String)"))
         self.frameTitleLabe.text = self.frameURLs[indexPath.row].frameTitle
-//        let screenSize = UIScreen.main.bounds
-//        let screenWidth = screenSize.width
+        self.framePriceLabel.text = "\(UserDefaults.standard.value(forKey: FRAME_PRICE) as! String) - BDT"
+        /*let screenSize = UIScreen.main.bounds
+        let screenWidth = screenSize.width*/
         self.overLayFrame()
-        self.selectedPhoto.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6).isActive = true
         self.view.layoutIfNeeded()
     }
 }
@@ -344,7 +372,13 @@ extension SelectFrameViewController {
     @objc func handleCropButton(){
         self.handleContinueButton()
     }
-   
+    
+    @objc func handleRotateButton(){
+        UIView.animate(withDuration: 0.3, animations: {
+            self.frame.transform = self.frame.transform.rotated(by: CGFloat(Double.pi / 2))
+        })
+    }
+    
     @objc func back(sender: UIBarButtonItem) {
         self.showActionSheet()
     }
@@ -490,7 +524,7 @@ extension SelectFrameViewController {
                 let json = JSON(data: responseData)
                 if let dictArray = json.array {
                     for dict in dictArray {
-                        let data = FrameFetchingModel(frameUrl: dict["image_url"].string!, frameTitle: dict["title"].string!)
+                        let data = FrameFetchingModel(frameUrl: dict["image_url"].string!, frameTitle: dict["title"].string!, framePrice: dict["price"].string!)
                         self.frameURLs.append(data)
                     }
                     
@@ -500,7 +534,10 @@ extension SelectFrameViewController {
                         self.frameCollectionView.reloadData()
                         if counter == 0{
                             UserDefaults.standard.set(self.frameURLs[0].frameUrl, forKey: FRAME_URL)
+                            UserDefaults.standard.set(self.frameURLs[0].framePrice, forKey: FRAME_PRICE)
+                            self.frame.sd_setImage(with: URL(string: "\(UserDefaults.standard.value(forKey: FRAME_URL) as! String)"))
                             self.frameTitleLabe.text = self.frameURLs[0].frameTitle
+                            self.framePriceLabel.text = "\(UserDefaults.standard.value(forKey: FRAME_PRICE) as! String) - BDT"
                             counter = counter + 1
                         }
                     }

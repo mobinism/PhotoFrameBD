@@ -10,6 +10,7 @@ import Foundation
 class FrameFetchingModel: NSObject {
     private var _frameUrl: String
     private var _frameTitle: String
+    private var _framePrice: String
     
     var frameUrl: String {
         get {
@@ -21,9 +22,15 @@ class FrameFetchingModel: NSObject {
             return _frameTitle
         }
     }
-    init(frameUrl: String, frameTitle: String) {
+    var framePrice: String {
+        get {
+            return _framePrice
+        }
+    }
+    init(frameUrl: String, frameTitle: String, framePrice : String) {
         self._frameUrl = frameUrl
         self._frameTitle = frameTitle
+        self._framePrice = framePrice
     }
 }
 
