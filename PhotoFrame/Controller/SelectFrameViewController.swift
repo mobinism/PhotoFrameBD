@@ -331,12 +331,14 @@ class SelectFrameViewController: UIViewController{
         let reachability = Reachability()
         let isConnected = reachability.connectedToNetwork()
         
-        if isConnected{
+        if !isConnected{
             let modalController = InternetConnectionAlert()
             modalController.alertTitle.text   = "Oopps!!"
             modalController.alertMessage.text = "Check The Internet Connection!!"
             modalController.modalPresentationStyle = .overCurrentContext
-            present(modalController, animated: true, completion: nil)
+            present(modalController, animated: true, completion: {
+                print("modal raised")
+            })
         }
     }
 }

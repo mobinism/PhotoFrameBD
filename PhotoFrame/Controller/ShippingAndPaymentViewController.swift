@@ -55,24 +55,39 @@ class ShippingAndPaymentViewController: UIViewController {
         table.showsVerticalScrollIndicator = false
         return table
     }()
-    /*lazy var stepper: GMStepper = {
+    lazy var stepper: GMStepper = {
         let stepper = GMStepper()
         stepper.autorepeat = true
         stepper.minimumValue = 1
         stepper.maximumValue = 100
         stepper.stepValue = 1
-        stepper.labelFont = UIFont(name: SEMI_BOLD_FONT, size: 18)!
-        stepper.buttonsFont = UIFont(name: SEMI_BOLD_FONT, size: 24)!
-        stepper.labelTextColor = DARK_TEXT_COLOR
+        stepper.labelFont = UIFont(name: TEXT_FONT, size: 18)!
+        stepper.buttonsFont = UIFont(name: TEXT_FONT, size: 24)!
+        stepper.labelTextColor = UIColor(red:0.08, green:0.40, blue:0.75, alpha:1.0)
         stepper.labelBackgroundColor = UIColor.white
-        stepper.buttonsBackgroundColor = LIGHT_TEXT_COLOR
+        stepper.buttonsBackgroundColor = UIColor(red:0.13, green:0.59, blue:0.95, alpha:1.0)
         stepper.cornerRadius = 0
-        stepper.borderColor = LIGHT_TEXT_COLOR
+        stepper.borderColor = UIColor(red:0.08, green:0.40, blue:0.75, alpha:1.0)
         stepper.borderWidth = 1
         stepper.clipsToBounds = true
         stepper.translatesAutoresizingMaskIntoConstraints = false
+        stepper.addTarget(self, action: #selector(handleStepper), for: .touchUpInside)
         return stepper
-    }()*/
+    }()
+    lazy var addNoteButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Add Note +", for: .normal)
+        button.setTitleColor(UIColor(red:0.08, green:0.40, blue:0.75, alpha:1.0), for: .normal)
+        button.backgroundColor = .clear
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(handleAddNoteButton), for: .touchUpInside)
+        button.titleLabel!.font =  UIFont(name: TEXT_FONT, size: 17)
+        /*button.layer.shadowOffset = CGSize(width: 0, height: 3)
+        button.layer.shadowColor = UIColor.init(white: 0.5, alpha: 1).cgColor
+        button.layer.shadowRadius = 3
+        button.layer.shadowOpacity = 0.5*/
+        return button
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(PaymentDetailsTableCell.self, forCellReuseIdentifier: cellID)
@@ -113,6 +128,8 @@ class ShippingAndPaymentViewController: UIViewController {
         overLayFrame()
         setupAddShippingAddressButton()
         setupTableView()
+        setupStepper()
+        setupAddNoteButton()
     }
     
     func setupSelectedImageView(){
@@ -133,6 +150,22 @@ class ShippingAndPaymentViewController: UIViewController {
         frame.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         frame.topAnchor.constraint(equalTo: view.topAnchor, constant: 25).isActive = true
         frame.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7).isActive = true
+    }
+    func setupStepper(){
+        view.addSubview(stepper)
+        // constraints
+        stepper.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
+        stepper.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: -40).isActive = true
+        stepper.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        stepper.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.25).isActive = true
+    }
+    func setupAddNoteButton(){
+        view.addSubview(addNoteButton)
+        // constraints
+        addNoteButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
+        addNoteButton.centerYAnchor.constraint(equalTo: stepper.centerYAnchor).isActive = true
+        addNoteButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        addNoteButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.25).isActive = true
     }
     func setupAddShippingAddressButton(){
         view.addSubview(addShippingAddressButton)
@@ -193,6 +226,12 @@ extension ShippingAndPaymentViewController: UITableViewDelegate, UITableViewData
 extension ShippingAndPaymentViewController {
     @objc func handleAddShippingAdressButton(){
         
+    }
+    @objc func handleAddNoteButton(){
+        
+    }
+    @objc func handleStepper(){
+        print(stepper.value)
     }
 }
 class PaymentDetailsTableCell: UITableViewCell {
